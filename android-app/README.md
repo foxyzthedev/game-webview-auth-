@@ -10,6 +10,9 @@ Este é um app Android criado do zero. Ele não altera o APK original e não reu
 - envia o ID token a um endpoint HTTPS de validação;
 - retorna `foxyz_uid` para a Activity chamadora;
 - fecha a tela somente depois que o backend responde HTTP 2xx.
+- mostra um aviso azul quando o token é recebido/validado;
+- mostra um aviso vermelho quando o token não chega ou é recusado;
+- esconde o aviso automaticamente após 5 segundos.
 
 ## Identidade do app
 

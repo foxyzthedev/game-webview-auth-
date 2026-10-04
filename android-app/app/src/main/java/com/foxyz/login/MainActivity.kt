@@ -8,9 +8,12 @@ import android.view.ViewGroup
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import java.net.HttpURLConnection
+import java.net.URL
 
 class MainActivity : Activity() {
     private lateinit var webView: WebView
+    private val sessionVerifyUrl = "https://SEU-BACKEND.example/session/verify"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,14 +61,48 @@ class MainActivity : Activity() {
 
         val values = parseFragment(uri.fragment.orEmpty())
         if (values["status"] == "success" && !values["token"].isNullOrBlank()) {
-            val result = Intent().apply {
-                putExtra("foxyz_uid", values["uid"])
-                putExtra("foxyz_id_token", values["token"])
-            }
-            setResult(RESULT_OK, result)
-            finish()
+            verifySessionAndClose(values["uid"].orEmpty(), values["token"].orEmpty())
         }
         return true
+    }
+
+    private fun verifySessionAndClose(uid: String, token: String) {
+        if (sessionVerifyUrl.contains("SEU-BACKEND")) {
+            webView.loadData(
+                "<h3>Configuração necessária</h3><p>Defina o endpoint HTTPS de validação do token.</p>",
+                "text/html",
+                "UTF-8"
+            )
+            return
+        }
+
+        Thread {
+            val valid = runCatching {
+                val connection = URL(sessionVerifyUrl).openConnection() as HttpURLConnection
+                connection.requestMethod = "POST"
+                connection.setRequestProperty("Authorization", "Bearer $token")
+                connection.setRequestProperty("Content-Type", "application/json")
+                connection.connectTimeout = 10_000
+                connection.readTimeout = 10_000
+                connection.responseCode in 200..299
+            }.getOrDefault(false)
+
+            runOnUiThread {
+                if (valid) {
+                    val result = Intent().apply {
+                        putExtra("foxyz_uid", uid)
+                    }
+                    setResult(RESULT_OK, result)
+                    finish()
+                } else {
+                    webView.loadData(
+                        "<h3>Não foi possível validar a sessão</h3><p>Tente entrar novamente.</p>",
+                        "text/html",
+                        "UTF-8"
+                    )
+                }
+            }
+        }.start()
     }
 
     private fun parseFragment(fragment: String): Map<String, String> =

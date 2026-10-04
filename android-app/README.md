@@ -7,8 +7,9 @@ Este é um app Android criado do zero. Ele não altera o APK original e não reu
 - Abre `https://loginpagefoxyzbackend.vercel.app/` em um WebView;
 - Passa `returnTo=foxyz://auth/callback`;
 - Recebe o callback após login/cadastro;
-- Retorna `foxyz_uid` e `foxyz_id_token` para a Activity chamadora;
-- Fecha a tela apenas quando recebe `status=success` e um token.
+- envia o ID token a um endpoint HTTPS de validação;
+- retorna `foxyz_uid` para a Activity chamadora;
+- fecha a tela somente depois que o backend responde HTTP 2xx.
 
 ## Identidade do app
 
@@ -20,6 +21,14 @@ callback: foxyz://auth/callback
 ## Compilar
 
 Abra a pasta `android-app` no Android Studio e execute **Build > Make Project**. O app precisa de Android SDK 35 e JDK 17.
+
+Antes de compilar, edite `MainActivity.kt` e troque:
+
+```kotlin
+https://SEU-BACKEND.example/session/verify
+```
+
+pelo endpoint HTTPS que usa o exemplo `verify-token.example.js`. Sem essa configuração, o app mostra uma mensagem e não fecha o WebView de propósito.
 
 ## Segurança
 

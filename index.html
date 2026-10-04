@@ -16,24 +16,35 @@
   </header>
 
   <section id="login">
-    <div class="tag">AUTHENTICATION</div>
-    <h2>Bem-vindo de volta</h2>
-    <p class="muted">Entre com sua conta para continuar.</p>
-    <form id="form">
-      <label>E-mail</label>
+    <div class="tag" id="modeTag">AUTHENTICATION</div>
+    <h2 id="title">Bem-vindo de volta</h2>
+    <p class="muted" id="subtitle">Entre com sua conta para continuar.</p>
+    <form id="form" novalidate>
+      <div id="nameField" class="optional hidden">
+        <label for="nameInput">Nome</label>
+        <input id="nameInput" type="text" autocomplete="name" placeholder="Como devemos chamar você?" maxlength="40">
+      </div>
+      <label for="email">E-mail</label>
       <input id="email" type="email" autocomplete="username" placeholder="seu@email.com" required>
-      <label>Senha</label>
-      <div class="pass"><input id="password" type="password" autocomplete="current-password" placeholder="Sua senha" required><button type="button" id="show">◉</button></div>
-      <button class="enter" id="enter">ENTRAR <b>→</b></button>
-      <p id="msg" class="msg"></p>
+      <label for="password">Senha</label>
+      <div class="pass"><input id="password" type="password" autocomplete="current-password" placeholder="Sua senha" minlength="6" required><button type="button" id="show" aria-label="Mostrar senha">◉</button></div>
+      <div id="confirmField" class="optional hidden">
+        <label for="confirmPassword">Confirmar senha</label>
+        <div class="pass"><input id="confirmPassword" type="password" autocomplete="new-password" placeholder="Repita sua senha" minlength="6"><button type="button" id="showConfirm" aria-label="Mostrar confirmação de senha">◉</button></div>
+      </div>
+      <button class="enter" id="enter" type="submit"><span id="enterText">ENTRAR</span> <b>→</b></button>
+      <p id="msg" class="msg" role="alert" aria-live="polite"></p>
     </form>
+    <button class="switch" id="switchMode" type="button">Ainda não tenho conta</button>
   </section>
 
   <section id="user" class="hidden">
     <div class="tag">AUTHENTICATED</div>
     <h2 id="hello">Olá!</h2>
+    <p class="muted">Acesso liberado com sucesso.</p>
     <div class="profile"><div class="avatar" id="avatar">F</div><div><strong id="name">Usuário</strong><small id="mail"></small></div></div>
-    <button class="enter exit" id="logout">SAIR <b>↗</b></button>
+    <a class="enter game-link hidden" id="gameLink" href="#">VOLTAR AO GAME <b>↗</b></a>
+    <button class="enter exit" id="logout" type="button">SAIR <b>↗</b></button>
   </section>
 
   <footer><span><i></i> Firebase conectado</span><span>Foxyz</span></footer>

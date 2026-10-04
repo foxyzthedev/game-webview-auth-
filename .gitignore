@@ -1,0 +1,8 @@
+# Nunca envie credenciais privadas
+*.json
+!database.rules.json
+serviceAccount*.json
+firebase-adminsdk*.json
+.env
+.env.*
+node_modules/

@@ -1,1 +1,43 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090909">
+<title>Foxyz Private Project</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="glow"></div><div class="grid"></div>
+<main class="card">
+  <header class="brand">
+    <div class="logo">F</div>
+    <div><h1>Foxyz Private Project</h1><small>PAINEL PRIVADO</small></div>
+  </header>
 
+  <section id="login">
+    <div class="tag">AUTHENTICATION</div>
+    <h2>Bem-vindo de volta</h2>
+    <p class="muted">Entre com sua conta para continuar.</p>
+    <form id="form">
+      <label>E-mail</label>
+      <input id="email" type="email" autocomplete="username" placeholder="seu@email.com" required>
+      <label>Senha</label>
+      <div class="pass"><input id="password" type="password" autocomplete="current-password" placeholder="Sua senha" required><button type="button" id="show">◉</button></div>
+      <button class="enter" id="enter">ENTRAR <b>→</b></button>
+      <p id="msg" class="msg"></p>
+    </form>
+  </section>
+
+  <section id="user" class="hidden">
+    <div class="tag">AUTHENTICATED</div>
+    <h2 id="hello">Olá!</h2>
+    <div class="profile"><div class="avatar" id="avatar">F</div><div><strong id="name">Usuário</strong><small id="mail"></small></div></div>
+    <button class="enter exit" id="logout">SAIR <b>↗</b></button>
+  </section>
+
+  <footer><span><i></i> Firebase conectado</span><span>Foxyz</span></footer>
+</main>
+<script type="module" src="app.js"></script>
+</body>
+</html>

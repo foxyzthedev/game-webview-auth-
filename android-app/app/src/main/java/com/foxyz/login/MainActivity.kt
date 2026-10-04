@@ -13,7 +13,7 @@ import java.net.URL
 
 class MainActivity : Activity() {
     private lateinit var webView: WebView
-    private val sessionVerifyUrl = "https://SEU-BACKEND.example/session/verify"
+    private val sessionVerifyUrl = "https://loginpagefoxyzbackend.vercel.app/api/session/verify"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,15 +67,6 @@ class MainActivity : Activity() {
     }
 
     private fun verifySessionAndClose(uid: String, token: String) {
-        if (sessionVerifyUrl.contains("SEU-BACKEND")) {
-            webView.loadData(
-                "<h3>Configuração necessária</h3><p>Defina o endpoint HTTPS de validação do token.</p>",
-                "text/html",
-                "UTF-8"
-            )
-            return
-        }
-
         Thread {
             val valid = runCatching {
                 val connection = URL(sessionVerifyUrl).openConnection() as HttpURLConnection

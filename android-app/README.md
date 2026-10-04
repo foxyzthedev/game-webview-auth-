@@ -22,13 +22,13 @@ callback: foxyz://auth/callback
 
 Abra a pasta `android-app` no Android Studio e execute **Build > Make Project**. O app precisa de Android SDK 35 e JDK 17.
 
-Antes de compilar, edite `MainActivity.kt` e troque:
+O app já está configurado para usar este endpoint HTTPS:
 
 ```kotlin
-https://SEU-BACKEND.example/session/verify
+https://loginpagefoxyzbackend.vercel.app/api/session/verify
 ```
 
-pelo endpoint HTTPS que usa o exemplo `verify-token.example.js`. Sem essa configuração, o app mostra uma mensagem e não fecha o WebView de propósito.
+O endpoint valida o ID token no Firebase antes de responder HTTP 2xx. Se a validação falhar, o app não fecha o WebView.
 
 ## Segurança
 

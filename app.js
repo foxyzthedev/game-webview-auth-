@@ -20,13 +20,40 @@ const returnTo = params.get("returnTo");
 const isValidReturnUrl = (value) => {
   try {
     const url = new URL(value);
-    return ["http:", "https:"].includes(url.protocol);
+    if (["http:", "https:"].includes(url.protocol)) return true;
+    return url.protocol === "foxyz:" && url.hostname === "auth" && url.pathname === "/callback";
   } catch {
     return false;
   }
 };
 
+async function redirectToGame(user) {
+  if (!isValidReturnUrl(returnTo)) return;
+  const callback = new URL(returnTo);
+  if (callback.protocol === "foxyz:") {
+    const token = await user.getIdToken();
+    callback.hash = new URLSearchParams({
+      status: "success",
+      uid: user.uid,
+      token
+    }).toString();
+  } else {
+    callback.searchParams.set("status", "success");
+    callback.searchParams.set("uid", user.uid);
+  }
+  window.setTimeout(() => { window.location.assign(callback.toString()); }, 500);
+}
+
 let registerMode = false;
+let captchaResult = 0;
+
+function createCaptcha() {
+  const first = Math.floor(Math.random() * 8) + 2;
+  const second = Math.floor(Math.random() * 8) + 2;
+  captchaResult = first + second;
+  $("#captchaQuestion").textContent = `${first} + ${second} =`;
+  $("#captchaAnswer").value = "";
+}
 
 function togglePassword(input, button) {
   button.addEventListener("click", () => {
@@ -53,10 +80,12 @@ function setMode(register) {
     : "Entre com sua conta para continuar.";
   $("#nameField").classList.toggle("hidden", !register);
   $("#confirmField").classList.toggle("hidden", !register);
+  $("#captchaField").classList.toggle("hidden", !register);
   $("#nameInput").required = register;
   $("#confirmPassword").required = register;
   $("#enterText").textContent = register ? "CRIAR CONTA" : "ENTRAR";
   $("#switchMode").textContent = register ? "Já tenho uma conta" : "Ainda não tenho conta";
+  if (register) createCaptcha();
   setMessage();
 }
 
@@ -76,6 +105,9 @@ $("#form").addEventListener("submit", async (event) => {
       const name = $("#nameInput").value.trim();
       if (password !== $("#confirmPassword").value) {
         throw { code: "auth/passwords-dont-match" };
+      }
+      if (Number($("#captchaAnswer").value) !== captchaResult) {
+        throw { code: "auth/invalid-captcha" };
       }
       const credential = await createUserWithEmailAndPassword(auth, email, password);
       user = credential.user;
@@ -99,9 +131,7 @@ $("#form").addEventListener("submit", async (event) => {
       }
     }
     setMessage(registerMode ? "Conta criada. Redirecionando..." : "Login realizado.", "success");
-    if (isValidReturnUrl(returnTo)) {
-      window.setTimeout(() => { window.location.assign(returnTo); }, 500);
-    }
+    await redirectToGame(user);
   } catch (error) {
     const errors = {
       "auth/email-already-in-use": "Este e-mail já possui uma conta.",
@@ -109,6 +139,7 @@ $("#form").addEventListener("submit", async (event) => {
       "auth/invalid-email": "Digite um e-mail válido.",
       "auth/weak-password": "A senha precisa ter pelo menos 6 caracteres.",
       "auth/passwords-dont-match": "As senhas não são iguais.",
+      "auth/invalid-captcha": "Resposta da verificação incorreta.",
       "auth/too-many-requests": "Muitas tentativas. Aguarde um pouco.",
       "auth/network-request-failed": "Falha de conexão. Verifique sua internet."
     };
@@ -139,5 +170,6 @@ onAuthStateChanged(auth, async (user) => {
     const link = $("#gameLink");
     link.href = returnTo;
     link.classList.remove("hidden");
+    if (returnTo.startsWith("foxyz://")) await redirectToGame(user);
   }
 });

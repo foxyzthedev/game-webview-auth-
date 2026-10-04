@@ -32,6 +32,10 @@
         <label for="confirmPassword">Confirmar senha</label>
         <div class="pass"><input id="confirmPassword" type="password" autocomplete="new-password" placeholder="Repita sua senha" minlength="6"><button type="button" id="showConfirm" aria-label="Mostrar confirmação de senha">◉</button></div>
       </div>
+      <div id="captchaField" class="captcha optional hidden">
+        <label for="captchaAnswer">Verificação rápida</label>
+        <div class="captcha-row"><span id="captchaQuestion">0 + 0 =</span><input id="captchaAnswer" type="number" inputmode="numeric" placeholder="Resposta"></div>
+      </div>
       <button class="enter" id="enter" type="submit"><span id="enterText">ENTRAR</span> <b>→</b></button>
       <p id="msg" class="msg" role="alert" aria-live="polite"></p>
     </form>

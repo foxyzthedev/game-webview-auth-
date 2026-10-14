@@ -1,11 +1,11 @@
 // CONFIGURAÇÃO WEB DO FIREBASE.
-// Esta configuração usa apenas credenciais públicas do app Web.
-// Nunca coloque aqui JSON de Service Account ou private_key.
+// Coloque seus itens ou coisas nos campos abaixo.
 export const firebaseConfig = {
-  apiKey: "AIzaSyCC91U9UH8tbCHt-7ZP8oZI2BfrVXR6W90",
-  authDomain: "foxyz-private-project.firebaseapp.com",
-  databaseURL: "https://foxyz-private-project-default-rtdb.firebaseio.com",
-  projectId: "foxyz-private-project",
-  storageBucket: "foxyz-private-project.firebasestorage.app",
-  messagingSenderId: "352757977270"
+  apiKey: "COLOQUE_SUA_API_KEY_AQUI",
+  authDomain: "COLOQUE_SEU_AUTH_DOMAIN_AQUI",
+  databaseURL: "COLOQUE_SUA_DATABASE_URL_AQUI",
+  projectId: "COLOQUE_SEU_PROJECT_ID_AQUI",
+  storageBucket: "COLOQUE_SEU_STORAGE_BUCKET_AQUI",
+  messagingSenderId: "COLOQUE_SEU_MESSAGING_SENDER_ID_AQUI",
+  appId: "COLOQUE_SEU_APP_ID_AQUI"
 };

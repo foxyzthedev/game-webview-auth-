@@ -1,48 +1,55 @@
-# Foxyz Private Project
+🦊 Foxyz Private Project
 
-Tela de login e criação de conta com Firebase Authentication (e-mail/senha) + Realtime Database.
 
-## Link publicado
+Sistema de login e criação de contas para jogos e aplicações Web, utilizando Firebase Authentication e Realtime Database.
 
-- **Vercel:** https://loginpagefoxyzbackend.vercel.app
 
-## Como abrir pelo game e voltar automaticamente
+⚙️ Como funciona?
 
-Abra a página de login passando o endereço do game no parâmetro `returnTo`:
 
-```text
-https://loginpagefoxyzbackend.vercel.app/?returnTo=https%3A%2F%2FSEU-GAME.com
-```
+O usuário acessa a página, faz login com e-mail e senha ou cria uma nova conta. O Firebase Authentication verifica as credenciais e autentica o usuário.
 
-Depois do login ou cadastro, o usuário é redirecionado para esse endereço. Se o endereço não for informado, a página mostra apenas o painel autenticado. O parâmetro aceita somente URLs `http://` ou `https://`.
 
-Para o WebView Android, use o callback próprio:
+Após a autenticação, a página pode redirecionar o usuário para o jogo por meio do parâmetro returnTo.
 
-```text
-https://loginpagefoxyzbackend.vercel.app/?returnTo=foxyz%3A%2F%2Fauth%2Fcallback
-```
 
-Após autenticar, a página envia o ID token real do Firebase no fragmento `foxyz://auth/callback`. O game deve validar esse token no backend com Firebase Admin SDK antes de liberar o jogador e fechar o WebView. O exemplo de Manifest e Activity está em `android-integration/`.
+O projeto também pode ser integrado a jogos Android usando WebView e um callback personalizado. Nesse caso, o backend deve validar o ID token do Firebase antes de liberar o acesso ao jogo.
 
-Exemplo em JavaScript no game:
 
-```js
-const loginUrl = new URL("https://loginpagefoxyzbackend.vercel.app/");
-loginUrl.searchParams.set("returnTo", window.location.href);
-window.location.href = loginUrl.toString();
-```
+🔥 Configuração
 
-## Configuração do Firebase
 
-1. Firebase Console > Authentication > Sign-in method > ative **Email/Password**.
-2. Realtime Database > Rules: cole o conteúdo de `database.rules.json`.
-3. Firebase Console > Project settings > Your apps > confira o Web App.
-4. Publique os arquivos no GitHub/Vercel. O deploy da Vercel pode ser automático após o push na branch `main`.
 
-A tela de criação inclui uma verificação matemática simples para funcionar imediatamente no WebView. Para proteção real contra bots, adicione reCAPTCHA, hCaptcha ou Turnstile com uma chave do seu domínio e valide o token no backend antes de criar a conta.
 
-A URL do RTDB já está configurada:
+Crie um projeto no Firebase Console.
 
-https://foxyz-private-project-default-rtdb.firebaseio.com
 
-> Nunca coloque uma Service Account JSON, `private_key` ou credencial administrativa no frontend/GitHub.
+Ative o login por e-mail e senha.
+
+
+Configure o Realtime Database e suas regras de segurança.
+
+
+Adicione as configurações do Firebase ao projeto.
+
+
+Publique na Vercel.
+
+
+
+
+🌐 Projeto online
+
+
+https://loginpagefoxyzbackend.vercel.app
+
+
+🛡️ Segurança
+
+
+A configuração Web do Firebase pode ser pública, mas as regras do banco devem proteger os dados dos usuários. Nunca publique chaves privadas, senhas ou credenciais administrativas.
+
+
+Desenvolvido por Foxyz.
+
+
